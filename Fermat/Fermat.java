@@ -2,12 +2,12 @@ import java.util.Random;
 
 public class Fermat {
     public static void main(String[] args) {
-        double start1 = System.nanoTime();
         Random random = new Random();
         int p = random.nextInt(101);
         System.out.println("///////number/////");
         System.out.println(p);
         System.out.println("///////O(sqrtn)/////");
+        double start1 = System.nanoTime();
         System.out.println(isPrimeOne(p));
         double finish1 = System.nanoTime();
         System.out.println((finish1 - start1) / 100000);
