@@ -2,21 +2,18 @@ import java.util.Random;
 
 public class Fermat {
     public static void main(String[] args) {
-        Random random = new Random();
-        int p = random.nextInt(101);
-        System.out.println("///////number/////");
-        System.out.println(p);
-        System.out.println("///////O(sqrtn)/////");
-        double start1 = System.nanoTime();
-        System.out.println(isPrimeOne(p));
-        double finish1 = System.nanoTime();
-        System.out.println((finish1 - start1) / 100000);
+       int num = 22;
+        System.out.println("Testing number: " + num);
 
-        System.out.println("///////O(logn)/////");
+        double start1 = System.nanoTime();
+        System.out.println("isPrimeOne: " + isPrimeOne(num));
+        double finish1 = System.nanoTime();
+        System.out.println("Time: " + (finish1 - start1) / 100000 + " ms");
+
         double start2 = System.nanoTime();
-        System.out.println(isPrimeTwo(p));
+        System.out.println("isPrimeTwo: " + isPrimeTwo(num, 10)); // 10 random bases
         double finish2 = System.nanoTime();
-        System.out.println((finish2 - start2) / 100000);
+        System.out.println("Time: " + (finish2 - start2) / 1000000 + " ms");
 
 
     }
@@ -46,10 +43,10 @@ public class Fermat {
         return true;
     }
 
-    public static long expBySquaring(long base, long exp, long mod) {
+    public static int expBySquaring(int base, int exp, int mod) {
         //method for find (base^exp) mod
 
-        long result = 1;
+        int result = 1;
         base %= mod; // base^n mod x == (base mod x)^n modx , we used this method
         //for use less numbers in ^
         while (exp > 0) {
@@ -58,17 +55,22 @@ public class Fermat {
                 // is the same exp &1 == exp%2==1 when exp is ood number
                 result = (result * base) % mod; // reuslt save the number when is odd number
             }
-            exp /= 2; // in Yt i found that exp/=2 == exp >>1;
+            exp /=2 ; // in Yt i found that exp/=2 == exp >>1;
             base = (base * base) % mod; // is like use binarian number for example 7 = 2^2 +2 + 2^0
         }
         return result;
     }
+    //Ludwing Cerda
 
-    public static boolean isPrimeTwo(int p) {
+    public static boolean isPrimeTwo(int p, int k) {
         if (p <= 1) return false;
-
-        int a = 2; // we need to remember that a^p-1 ==1(mod p), p is the number
+        Random random = new Random();
+        for (int i = 0; i < k; i++) {
+            int a = 1 + random.nextInt(p - 1); // Random a en [1, p-1]
+            if (expBySquaring(a, p - 1, p) != 1) return false;
+            // we need to remember that a^p-1 ==1(mod p), p is the number
+        }
         // for verify if is prime or not. a is a number between 1<=a<=p-1;
-        return expBySquaring(a, p - 1, p) ==1; // if the result is =1 is prime , Fermat's theorem
+        return true; // if the result is =1 is prime , Fermat's theorem
     }
 }
